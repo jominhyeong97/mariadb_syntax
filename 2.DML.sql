@@ -50,3 +50,7 @@ select name email , name from author a;
 -- null을 조회조건으로 활용
 select *from author where password is null;
 select *from author where password is not null;
+
+-- 프로그래머스 sql 문제풀이
+-- 여러기준으로 정렬하기
+-- 상위 n개 레코드

@@ -1,3 +1,22 @@
+복습시 최종정리 DDL
+-- create database 데이터베이스명
+-- create table 테이블명 (a int, b varchar(255), primary key(a), foreign (b) reference 타테이블(b));
+
+-- show databases
+-- show tables
+-- show index from 테이블명
+
+-- describe 테이블명
+
+-- alter table rename 테이블명 바꿀테이블명
+-- alter table 테이블명 add column 칼럼명 varchar(255);
+-- alter table 테이블명 modify column 칼럼명 not null, modify column 칼럼명 unique;
+-- alter table 테이블명 change 칼럼명 바꿀칼럼명 int;
+
+-- drop 테이블명
+-- drop table if exists 테이블명
+
+
 -- Maria 서버에 접속
 mairadb -u root -p 입력 후 비밀번호 별도 입력
 
@@ -63,12 +82,9 @@ alter table post modify column title varchar(255) not null, modify column conten
 -- 테이블을 삭제하는 명령어 : drop
 drop table abc;
 drop table if exists abc; (일련의 쿼리문에서 특정쿼리에서 에러가 안나게끔 if exists 사용)
--- 테이블의 조건이나 index 등 조회 : show
 
--- 테이블의 구조를 검색 : describe
--- 스키마 선택 : use
 
--- 최종순서
+
 /*
 1.마리아 로그인
 2.스키마1 이름의 스키마 생성
@@ -88,7 +104,8 @@ drop database 스키마1;
 create database 스키마2;
 show databases; (스키마 목록조회)
 use 스키마2;
-create table 테이블1 (a int, b int, c varchar(255), d varchar(255) not null, e varchar(255) unique, private key(a), foreigner key(b) references 다른테이블명(칼럼명));
+create table 테이블1 (a int, b int, c varchar(255), d varchar(255) not null, 
+e varchar(255) unique, primary key(a), foreign key(b) references 다른테이블명(칼럼명));
 show index from 테이블1;
 show create table 테이블명;(테이블 생성명령문 조회)
 describe 테이블1;(테이블 컬럼정보 조회);*/
