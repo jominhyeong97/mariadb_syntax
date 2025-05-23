@@ -1,8 +1,8 @@
--- insert : 테이블에 데이터 삽입
+-- insert : 테이블에 데이터 삽입 (insert into values)
 insert into 테이블명(컬럼1, 컬럼2, 컬럼3) values(데이터1, 데이터2, 데이터3);
 insert into author(id, name, email) values(3, 'hong3', 'hong3@naver.com'); --문자열은 일반적으로 작은따옴표 사용
 
--- update : 테이블에 데이터 변경
+-- update : 테이블에 데이터 변경 (update set)
 update author set name = "홍길동", email = "hong100@naver.com" where id = 3;
 
 -- select : 조회
