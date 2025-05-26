@@ -24,3 +24,5 @@ alter table author modify name varchar(255) default 'anonymouys';
 alter table author modify bigint auto_increment
 alter table post modify bigint auto_increment
 
+-- uuid 타입(중요!)
+alter table post add user_id char(36) default (uuid());
