@@ -27,6 +27,8 @@ select * from author where id=1;
 select * from author where name = 'hong2';
 select * from author where id>3;
 select * from author where id>2 and name='hong4';
+select * from author where id in (1,3,5);
+select * from author where id in (select id from author where name = 'hong');
 
 -- 중복제거 조회 : distinct
 select distinct name from author;
