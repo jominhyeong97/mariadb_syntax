@@ -56,7 +56,7 @@ create table posts
     primary key(id), foreign key(author_id) references author(id));
 
 -- 테이블 제약조건 조회(안중요)
-select * from information_schema.key_column_usage where table_name='posts';
+select * from information_schema.key_column_usage where table_name='post';
 
 -- 테이블 index 조회
 show index from author;

@@ -1,3 +1,4 @@
+-- 트랜젝션 : 하나의 논리적인 작업 단위로 처리되어야 하는 하나 이상의 SQL 문의 집합
 -- 트랜젝션 테스트
 alter table author add post_count int default 0;
 
@@ -46,16 +47,12 @@ begin
 END //
 DELIMITER ;
 
-DELIMITER //
-    CREATE PROCEDURE transaction_test2(IN titleInput VARCHAR(255), IN contentInput VARCHAR(255),IN idInput BIGINT)
-    BEGIN
-        DECLARE EXIT HANDLER FOR SQLEXCEPTION
-        BEGIN
-            ROLLBACK;
-        END;
-        START TRANSACTION;
-        UPDATE author SET post_count = post_count + 1 WHERE id = idInput;
-        INSERT INTO post (title, content, author_id) VALUES (titleInput, contentInput,idInput);
-        COMMIT;
-    END //
-DELIMITER ;
+-- 격리수준(동시성 이슈 관련)
+
+Serializable(격리성 매우 높음, 성능 매우 낮음)
+동시성 포기, 순차적으로 트랙잭션 처리
+Repeatable Read
+
+Read Committed
+
+Read UnCommited(가장 낮은 격리수준, )
