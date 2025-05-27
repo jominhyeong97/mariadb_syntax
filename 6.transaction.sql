@@ -46,13 +46,3 @@ begin
 
 END //
 DELIMITER ;
-
--- 격리수준(동시성 이슈 관련)
-
-Serializable(격리성 매우 높음, 성능 매우 낮음)
-동시성 포기, 순차적으로 트랙잭션 처리
-Repeatable Read
-
-Read Committed
-
-Read UnCommited(가장 낮은 격리수준, )

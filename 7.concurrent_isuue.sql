@@ -19,7 +19,40 @@ insert into author(email) values('honghong25@naver.com');
 
 -- Repeatable Read(매우중요)
 읽기의 일관성 보장 > lost update 문제 발생 > 배타적 잠금"select for update"으로 해결
+    -- lost update 문제 발생
+        <znjfl>
+        DELIMITER //
+        create procedure concurrent_test1()
+        begin
+            declare count int;
+            start transaction;
+            insert into post(title, author_id) values ('hello world', 4);
+            select post_count into count from author where id = 4;
+            do sleep(15);
+            update author set post_count= count + 1 where id = 4;
+            commit;
+        END //
+        DELIMITER ;
 
+        <터미널>
+        select post_count from author where id = 4;
+        
+    -- lost update 문제 해결 : select for update시에 트랜잭션이 종류후에 특정 행에대한 lock 풀림
+    DELIMITER //
+            create procedure concurrent_test2()
+            begin
+                declare count int;
+                start transaction;
+                insert into post(title, author_id) values ('hello world', 4);
+                select post_count into count from author where id = 4 for update;
+                do sleep(15);
+                update author set post_count= count + 1 where id = 4;
+                commit;
+            END //
+            DELIMITER ;
+        
+        <터미널>
+        select post_count from author where id = 4 for update; 
 
 -- Serializable(격리성 매우 높음, 성능 매우 낮음)
 모든 순차적으로 트랙잭션 처리 > 동시성 문제 없음
