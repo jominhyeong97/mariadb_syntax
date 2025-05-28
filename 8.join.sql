@@ -40,3 +40,34 @@ from BOOK b inner join AUTHOR a on b.AUTHOR_ID = a.AUTHOR_ID where b.CATEGORY = 
 -- 없어진 기록 찾기
 SELECT o.ANIMAL_ID, o.NAME 
 from ANIMAL_OUTS o left join  ANIMAL_INS i on o.ANIMAL_ID = i.ANIMAL_ID where i.ANIMAL_ID is null ORDER BY i.ANIMAL_ID ;
+
+-- union : 두 테이블의 select 결과를 횡으로 결합(기본적으로 distinct가 적용)
+-- union 시킬 때 컬럼의 개수와 컬럼의 타입이 같아야함 
+select name, email from author union select title, content from post;
+-- union all : 중복까지 모두 포함
+select name, email from author union all select title, content from post;
+
+-- 서브쿼리(중요) : select문 안에 또다른 select문
+-- where절 안에 서브쿼리
+-- 한번이라도 글을 쓴 author 목록 조회
+select distinct a.* from author a inner join post p on a.id=p.author_id;
+select * from author where id in(select author_id from post);
+
+-- 컬럼 위치에 서브쿼리
+-- author의 email과 author 별로 본인의 쓴 글의 개수를 출력
+select email, (select count(*) from post p where p.author_id=a.id) from author a 
+
+-- from절 위치에 서브쿼리
+select a.* from (select * from author where id>5) as a;
+
+-- group by 컬럼명 : 특정 컬럼으로 데이터를 그룹화 하여, 하나의 행(row)처럼 취급
+select author_id from post group by author_id;
+-- 보통 아래와 같이 집계함수와 많이 사용
+select author_id, count(*) from post group by author_id;
+
+-- 집계함수
+-- null은 count에서 제외
+select count(*) from author;
+select sum(price) from post;
+select avg(price) from post;
+select round(avg(price), 3) from post; --소수점3번째 자리에서 반올림
