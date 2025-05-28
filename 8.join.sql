@@ -71,3 +71,56 @@ select count(*) from author;
 select sum(price) from post;
 select avg(price) from post;
 select round(avg(price), 3) from post; --소수점3번째 자리에서 반올림
+
+-- group by와 집계함수
+select author_id, count(*), sum(price) from post group by author_id;
+
+-- where와 group by : 그룹화 한 컬럼으로 select 해야함함
+--예제1) 날짜별 post 글의 개수출력 (날짜 값이 null은 제외)
+select date_format(created_time, "%Y-%m-%d") as day, count(*) from post where created_time is not null group by day;
+--예제2) 자동차 종류 별 특정 옵션이 포함된 자동차 수 구하기
+SELECT CAR_TYPE, count(*) as CARS 
+from CAR_RENTAL_COMPANY_CAR  
+where OPTIONS like '%열선시트%' or OPTIONS like '%통풍시트%' or OPTIONS like '%가죽시트%' 
+group by CAR_TYPE 
+order by CAR_TYPE;
+-- 예제3) 입양시각 구하기(1)
+SELECT DATE_FORMAT(DATETIME,'%H') as HOUR, COUNT(*) as COUNT from ANIMAL_OUTS 
+WHERE DATE_FORMAT(DATETIME,'%H') >= '09' and  DATE_FORMAT(DATETIME,'%H') < '20'
+GROUP BY HOUR
+ORDER BY HOUR;
+-- group by와 having
+-- having은 group by를 통해 나온 집계값에 대한 조건
+-- 글을 2번 이상 쓴 사람 ID찾기
+select author_id from post group by author_id having count(*) >=2;
+
+-- 예제4) 동명 동물 수 찾기 (notnull안했는데)
+SELECT NAME, COUNT(*) AS COUNT from ANIMAL_INS 
+GROUP BY NAME
+HAVING COUNT(NAME) >= 2
+ORDER BY NAME;
+
+-- 예제5) 카테고리 별 도서 판매량 집계하기
+SELECT BOOK.CATEGORY, SUM(SALES) AS TOTAL_SALES FROM BOOK 
+INNER JOIN BOOK_SALES ON BOOK.BOOK_ID = BOOK_SALES.BOOK_ID
+WHERE DATE_FORMAT(BOOK_SALES.SALES_DATE, '%Y-%m') = '2022-01'
+GROUP BY BOOK.CATEGORY
+ORDER BY BOOK.CATEGORY
+
+-- 예제6) 조건에 맞는 사용자와 총 거래금액 조회하기
+SELECT G.USER_ID, G.NICKNAME,SUM(PRICE) AS TOTAL_SALES FROM USED_GOODS_BOARD B INNER JOIN USED_GOODS_USER G ON B.WRITER_ID = G.USER_ID
+WHERE B.STATUS = 'DONE'
+GROUP BY G.USER_ID
+HAVING TOTAL_SALES >= 700000
+ORDER BY TOTAL_SALES
+
+-- 다중열 group by
+-- group by 첫번째 컬럼, 두번째 컬럼 : 첫번째 컬럼으로 먼저 그룹, 다음에 두번째 컬럼으로 그룹
+-- post테이블에서 작성자별로 만든 제목의 개수를 출력하시오
+select author_id, title, count(*) from post group by author_id, title;
+
+-- 예제7) 재구매가 일어난 상품과 회원 리스트 구하기 ??
+SELECT USER_ID, PRODUCT_ID FROM ONLINE_SALE 
+GROUP BY USER_ID, PRODUCT_ID
+HAVING COUNT(*)>=2
+ORDER BY USER_ID, PRODUCT_ID DESC
