@@ -51,3 +51,5 @@ BEGIN
     END WHILE;
 END //
 DELIMITER ;
+
+create table author (id bigint auto)_increment
