@@ -37,3 +37,31 @@ get user:email:1
 # 특정 key 삭제
 del user:email:1
 
+# 현재 DB내 모든 key값 삭제
+flushdb
+
+# redis 실전활용2 : 좋아요기능 구현 → 동시성이슈 해결
+set likes:posting:1 0 #redis는 기본적으로 모든 key:value가 문자열. 내부적으로는 "0"으로 저장.
+# 특정 key값의 value를 1만큼 증가,감소 
+incr likes:posting:1 
+decr likesposting:1
+
+# redis 실전활용3 : 재고관리구현 → 동시성이슈 해결
+set stocks:produck:1 100
+decr stocks:produck:1
+incr stocks:produck:1
+
+# redis 실전활용4 : 캐싱기능 구현
+# 1번 회원 정보 조회 : select name, email age from member where id=1;
+# 위 데이터의 결과값을 spring서버를 통해 json으로 변형하여 redis에 캐싱
+# 최종적인 데이터 형식 : {"name":"hong", "email":"hong@daum.net", "age":30}
+set member:info:1 "{\"name\":\"hong\", \"email\":\"hong@daum.net\", \"age\":30}" ex 1000
+
+# list 자료구조
+# redis의 list는 deque와 같은 자료구조 즉 double-ended queue구조
+# lpush : 데이터를 list 자료구조에 왼쪽부터 삽입 / rpush : 오른쪽부터 삽입
+lpush hongs hong1
+lpush hongs hong2
+rpush hongs hong3
+# list 조회 : 0은 리스트의 시작 인덱스, -1은 마지막 인덱스
+lrange hongs
