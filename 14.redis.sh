@@ -64,4 +64,54 @@ lpush hongs hong1
 lpush hongs hong2
 rpush hongs hong3
 # list 조회 : 0은 리스트의 시작 인덱스, -1은 마지막 인덱스
-lrange hongs
+lrange hongs 0 -1 #전체조회
+lrange hongs -1 -1 #마지막 값 조회
+lrange hongs 0 0 #0번째 값 조회
+lrange hongs -2 -1 #마지막 2번째부터 마지막 까지
+lrange hongs 0 2 #0번째부터 2번째까지
+# list값 꺼내기, 꺼내면서 삭제.
+rpop hongs
+lpop hongs
+# A리스트에서 rpop하여 B리스트에서 lpush(중요하지 않음)
+rpoplpush 
+# list의 데이터 개수 조회
+llen hongs
+# list의 ttl 적용
+expire hongs 20
+# list의 ttl 조회
+ttl hongs
+
+# redis 실전활용5 : 최근 조회한 상품 목록
+rpush user:1:recent:product apple
+rpush user:1:recent:product banana
+rpush user:1:recent:product mango
+rpush user:1:recent:product orange
+rpush user:1:recent:product melon
+# 최근 본 상품 조회
+lrange user:1:recent:product -3 -1
+
+# set 자료구조 : 중복 없음, 순서 없음.
+sadd memberlist m1
+sadd memberlist m2
+sadd memberlist m3
+sadd memberlist m3 > 중복
+# set 자료 조회
+smembers memberlist
+# set멤버 개수 조회
+scard memberlist
+# 특정멤버가 set안에 있는 존재여부 확인
+sismember memberlist m2
+# 특정멤버 삭제
+srem memberlist m2 
+
+# redis 실전활용6 : 좋아요 구현
+# 게시글상세보기에 들어가면
+scard posting:likes:1 (눌렀던 사람들 수)
+sismember posting:likes:1 a1@naver.com (내가 눌렀는지)
+# 게시글에 좋아요를 하면
+sadd posting:likes:1 a1@naver.com
+# 좋아요 한 사람을 클릭해서 조회
+smembers posting:likes:1
+
+# zset : sorted set(정렬된 셋)
+...
