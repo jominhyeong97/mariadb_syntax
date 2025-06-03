@@ -114,4 +114,37 @@ sadd posting:likes:1 a1@naver.com
 smembers posting:likes:1
 
 # zset : sorted set(정렬된 셋)
-...
+# zset을 활용해서  최근시간순으로 정렬가능(zset도 set이므로 같은상품 add경우 중복이 제거되고 ,score(시간)값만 업데이트)
+zadd user:1:recent:product 091330 mango
+zadd user:1:recent:product 091332 apple (최신 apple로 업데이트 됨)
+zadd user:1:recent:product 091335 banana
+zadd user:1:recent:product 091341 orange
+zadd user:1:recent:product 091350 apple
+
+# zset조회 : zrange(score기준 오름차순), zrevrange(score기준 내림차순)
+zrange user:1:recent:product 0 2
+zrange user:1:recent:product -3 -1 
+(mango, banana, orange, apple)
+# withscore를 통해 score값까지 같이 출력
+zrevrange user:1:recent:product 0 2 withscores 
+(apple, orange, banana, mango)
+
+# 실전활용7 : 주식시세저장
+# 종목:삼성전자, 시세:55000원, 시간:현재시간(유닉스타임스탬프) > 년월일시간을 초단위로 변환한것
+zadd stock:price:se 1748911141 55000
+zadd stock:price:se 1748911142 55500
+zadd stock:price:lg 1748911143 100000
+zadd stock:price:lg 1748911143 110000
+# 삼성전자의 현재시세
+zrange stock:price:se -1 -1
+
+# hashes 자료구조 : value가 amp형태의 자료구조(key:value, key:value ... 형태의 자료구조)
+set member:info:1 "{\"name\":\"hong\", \"email\":\"hong@daum.net\", \"age\":30}" 
+hset member:info:1 name hong email hong@daum.net age 30
+# 특정 값 조회
+hget member:info:1 name
+# 모든 객체 값 조회
+hgetall member:info:1
+# 특정 요소 값 수정
+hset member:info:1 name hong2
+# 빈번하고 변경되는 객체값을 저장시 효율적
